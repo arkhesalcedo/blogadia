@@ -26,7 +26,7 @@
                             <label for="image">Site Logo</label>
                             <input type="file" name="image" class="form-control">
                             @if($site->image_path)
-                                <img src="{{ asset($site->image_path) }}" class="img-responsive thumbnail">
+                                <img src="{{ asset('storage/' . $site->image_path) }}" class="img-responsive thumbnail">
                             @endif
                         </div>
                         <div class="form-group">
