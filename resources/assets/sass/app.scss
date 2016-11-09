@@ -1,0 +1,30 @@
+
+// Fonts
+@import url(https://fonts.googleapis.com/css?family=Raleway:100,300,400,600);
+
+// Variables
+@import "variables";
+
+// Bootstrap
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+.navbar-brand {
+	padding: 0px;
+}
+
+.logo {
+	max-height: 50px;
+}
+
+.nav-pills .nav-pills {
+	margin-left: 20px;
+}
+
+.tab-content {
+	padding: 20px 0px;
+}
+
+.panel-heading {
+	font-weight: bold;
+	font-size: 20px;
+}
