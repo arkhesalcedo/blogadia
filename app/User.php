@@ -11,7 +11,7 @@ use App\Events\NewUserRegister;
 
 class User extends Authenticatable
 {
-    use Notifiable, SoftDeletes, HasRoles, HasInfo, HasSocial, HasPermission, HasSites;
+    use Notifiable, SoftDeletes, HasRoles, HasInfo, HasSocial, HasPermission, HasSites, HasCampaign;
 
     /**
      * The attributes that are mass assignable.

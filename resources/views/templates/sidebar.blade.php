@@ -6,17 +6,9 @@
 	            <ul class="nav nav-pills nav-stacked">
 				  	<li>
 				  		<a href="{{ url('user') }}">Members</a>
-				  		<ul class="nav nav-pills nav-stacked">
-						  	<li><a href="{{ url('add-credits') }}">Add Credits</a></li>
-						  	<li><a href="{{ url('add-administrator') }}">Add Administrator</a></li>
-						</ul>
 				  	</li>
 				  	<li>
-				  		<a href="{{ url('campaign') }}">Campaigns</a>
-				  		<ul class="nav nav-pills nav-stacked">
-						  	<li><a href="{{ url('add-credits') }}">Add Credits</a></li>
-						  	<li><a href="{{ url('add-administrator') }}">Add Administrator</a></li>
-						</ul>
+				  		<a href="{{ url('campaigns') }}">Campaigns</a>
 				  	</li>
 				</ul>
 	        </div>

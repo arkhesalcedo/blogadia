@@ -27,6 +27,9 @@
 					    	<div role="tabpanel" class="tab-pane active" id="account">
 						    	<div class="col-sm-6">
 						    		@include('forms.reset_password')
+						    		@if($user->hasRole('advertiser'))
+						    			@include('forms.add_credits')
+						    		@endif
 						    	</div>
 					    		<div class="col-sm-6">
 						    		@if(auth()->user()->hasRole('administrator'))

@@ -3,7 +3,7 @@
 @section('content')
 	<div class="col-md-9">
 	    <div class="panel panel-warning">
-	        <div class="panel-heading">Members</div>
+	        <div class="panel-heading">Members<a href="{{ route('user.create') }}" class="btn btn-info pull-right">Add Administrator</a></div>
 	        <div class="panel-body">
 	        	@include('templates.message')
 	            @if (!$users->isEmpty())

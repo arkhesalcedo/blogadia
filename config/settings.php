@@ -286,5 +286,16 @@ return [
 		'50' => 'more than 50',
 		'70' => 'more than 70',
 		'100' => 'more than 100'
-	]	
+	],
+	'duration' => [
+		'14' => '2 weeks',
+		'30' => '1 month',
+		'90' => '3 months',
+		'180' => '6 months',
+		'365' => '1 year'
+	],
+	'type' => [
+		'Image' => 'image',
+		'File' => 'file'
+	]
 ];
