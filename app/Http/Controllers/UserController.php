@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Role;
+use App\Campaign;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -81,7 +82,9 @@ class UserController extends Controller
 
         $user->load('info', 'social', 'roles');
 
-        return view('templates.user_edit', compact(['user']));
+        $campaigns = Campaign::where('user_id', '=', $user->id)->withTrashed()->paginate(10);
+
+        return view('templates.user_edit', compact(['user', 'campaigns']));
     }
 
     /**

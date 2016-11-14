@@ -61,7 +61,7 @@
 				    	@endif
 				    	@if($user->hasRole('advertiser'))
 				    		<div role="tabpanel" class="tab-pane" id="campaigns">
-				    			Campaigns
+				    			@include('forms.campaigns')
 				    		</div>
 				    	@endif
 				  </div>
