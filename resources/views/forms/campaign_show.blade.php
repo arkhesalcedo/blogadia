@@ -20,49 +20,49 @@
                     @foreach ($campaign->uploads as $files)
                         <a href="{{ asset($files->path) }}" id="download" class="btn btn-success btn-xs" download>{{ $files->type }}</a><br><br>
                     @endforeach
-                    @can('update', $campaign)
+                @endif
+                @can('update', $campaign)
+                    <hr>
+                    <a href="{{ route('user.campaign.edit', ['id' => $campaign->user->id, 'campaign_id' => $campaign->id]) }}" class="btn btn-primary pull-right">Edit</a>
+                @endcan
+                @if(auth()->user()->hasRole('blogger'))
+                    @if(!$campaign->invited(auth()->user()->id))
                         <hr>
-                        <a href="{{ route('user.campaign.edit', ['id' => $campaign->user->id, 'campaign_id' => $campaign->id]) }}" class="btn btn-primary pull-right">Edit</a>
-                    @endcan
-                    @if(auth()->user()->hasRole('blogger'))
-                        @if(!$campaign->invited(auth()->user()->id))
+                        <form action="{{ url('apply') }}" method="POST">
+                            {{ csrf_field() }}
+                            <input type="hidden" name="campaign_id" value="{{ $campaign->id }}">
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <textarea id="message" name="message" class="form-control" rows="5"></textarea>
+                            </div>
                             <hr>
-                            <form action="{{ url('apply') }}" method="POST">
-                                {{ csrf_field() }}
-                                <input type="hidden" name="campaign_id" value="{{ $campaign->id }}">
-                                <div class="form-group">
-                                    <label for="message">Message</label>
-                                    <textarea id="message" name="message" class="form-control" rows="5"></textarea>
-                                </div>
-                                <hr>
-                                <button type="submit" class="btn btn-primary pull-right">Apply</button>
-                            </form>
-                        @endif
-                        @if($campaign->offered(auth()->user()->id))
-                            <hr>
-                            <h3>Leave a comment</h3>
+                            <button type="submit" class="btn btn-primary pull-right">Apply</button>
+                        </form>
+                    @endif
+                    @if($campaign->offered(auth()->user()->id))
+                        <hr>
+                        <h3>Leave a comment</h3>
 
-                            <form action="{{ url('comment') }}" method="POST">
-                                {{ csrf_field() }}
-                                <input type="hidden" name="user_id" value="{{ $campaign->user->id }}">
-                                <div class="form-group">
-                                    <label for="message">Message</label>
-                                    <textarea id="message" name="message" class="form-control" rows="5"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="rating">Rating</label>
-                                    <select id="rating" name="rating" class="form-control">
-                                        <option value="5">5 Stars</option>
-                                        <option value="4">4 Stars</option>
-                                        <option value="3">3 Stars</option>
-                                        <option value="2">2 Stars</option>
-                                        <option value="1">1 Stars</option>
-                                    </select>
-                                </div>
-                                <hr>
-                                <button type="submit" class="btn btn-primary pull-right">Submit</button>
-                            </form>
-                        @endif
+                        <form action="{{ url('comment') }}" method="POST">
+                            {{ csrf_field() }}
+                            <input type="hidden" name="user_id" value="{{ $campaign->user->id }}">
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <textarea id="message" name="message" class="form-control" rows="5"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="rating">Rating</label>
+                                <select id="rating" name="rating" class="form-control">
+                                    <option value="5">5 Stars</option>
+                                    <option value="4">4 Stars</option>
+                                    <option value="3">3 Stars</option>
+                                    <option value="2">2 Stars</option>
+                                    <option value="1">1 Stars</option>
+                                </select>
+                            </div>
+                            <hr>
+                            <button type="submit" class="btn btn-primary pull-right">Submit</button>
+                        </form>
                     @endif
                 @endif
             </div>
