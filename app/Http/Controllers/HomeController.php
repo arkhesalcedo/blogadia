@@ -20,7 +20,7 @@ class HomeController extends Controller
         if (auth()->user()->hasRole('administrator')) {
             return redirect('user');
         }
-
-        auth()->logout();
+        
+        return redirect('campaigns');
     }
 }

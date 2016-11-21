@@ -1,4 +1,5 @@
 @charset "UTF-8";
+@import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css);
 @import url(https://fonts.googleapis.com/css?family=Raleway:100,300,400,600);
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
@@ -5781,5 +5782,24 @@ button.close {
 .panel-heading {
   font-weight: bold;
   font-size: 20px; }
+
+.bold {
+  font-weight: 700; }
+
+.bs-callout {
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid #eee;
+  border-left-width: 5px;
+  border-radius: 3px; }
+
+.bs-callout-primary {
+  border-left-color: #3097D1; }
+
+.italic {
+  font-style: italic; }
+
+.social_links {
+  font-size: 30px; }
 
 /*# sourceMappingURL=app.css.map */

@@ -71,6 +71,25 @@ class UserController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show(User $user)
+    {
+        if ($user->hasRole('administrator')) {
+            return redirect('home');
+        }
+
+        $this->authorize('view', $user);
+
+        $user->load(['info', 'sites', 'social', 'comments', 'campaigns']);
+
+        return view('templates.user_show', compact(['user']));
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -80,11 +99,15 @@ class UserController extends Controller
     {
         $this->authorize('update', $user);
 
-        $user->load('info', 'social', 'roles');
+        $user->load('info', 'social', 'roles', 'info.subscription');
 
         $campaigns = Campaign::where('user_id', '=', $user->id)->withTrashed()->paginate(10);
 
-        return view('templates.user_edit', compact(['user', 'campaigns']));
+        $jobs = Campaign::with('user', 'invitedUsers')->whereHas('invitedUsers', function($query) use ($user){
+            $query->whereUserId($user->id);
+        })->withTrashed()->paginate(20);
+
+        return view('templates.user_edit', compact(['user', 'campaigns', 'jobs']));
     }
 
     /**
@@ -97,29 +120,13 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $this->authorize('update', $user);
-
-        if ($request->add_credits) {
-            $this->validate($request, [
-                'credits' => 'required'  
-            ]);
-
-            $user->info->credits += $request->credits;
-            $user->info->save();
-
-            return redirect()->back()->with([
-                'message' => 'Credits Added Successfully!',
-                'title' => 'Success!',
-                'class' => 'success',
-                'icon' => 'check'
-            ]);
-        }
-
+        
         $this->validate($request, [
             'password' => 'required'  
         ]);
 
-        $this->password = bcrypt($request->input('password'));
-        $this->save();
+        $user->password = bcrypt($request->input('password'));
+        $user->save();
 
         return redirect()->back()->with([
             'message' => 'Password Reset Successful!',
@@ -147,5 +154,23 @@ class UserController extends Controller
             'class' => 'success',
             'icon' => 'check'
         ]);
+    }
+
+    public function comment(Request $request)
+    {
+        $user = User::findOrFail($request->user_id);
+
+        if (auth()->user()->hasRole('blogger') ? $user->workedFor() : $user->workedWith()) {
+            auth()->user()->reviews()->save($user, ['rating' => $request->rating, 'message' => $request->message]);
+
+            return redirect()->back()->with([
+                'message' => 'Comment Submitted Successfully!',
+                'title' => 'Success!',
+                'class' => 'success',
+                'icon' => 'check'
+            ]);
+        }
+
+        return redirect()->back();
     }
 }

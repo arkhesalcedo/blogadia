@@ -2,7 +2,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.css">
 @endsection
 
-<h3>Update Campaign</h3>
+<h3>Update Campaign <a href="{{ route('user.campaign.show', ['id' => $campaign->user->id, 'campaign_id' => $campaign->id]) }}" class="btn btn-primary pull-right">View</a></h3>
 <hr>
 <div class="row">
     <div class="col-sm-12">

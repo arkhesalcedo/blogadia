@@ -9,4 +9,9 @@ class Subscription extends Model
     protected $fillable = [
         'name', 'label'
     ];
+    
+    public function info()
+    {
+    	return $this->hasMany(Info::class);
+    }
 }

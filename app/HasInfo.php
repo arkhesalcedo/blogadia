@@ -13,6 +13,7 @@ trait HasInfo
     {
     	$info = new Info;
         $info->user_id = $this->id;
+        $info->country = 'PH';
         $info->save();
 
         return $this;
@@ -25,6 +26,14 @@ trait HasInfo
 
     public function getFullName()
     {
-        return $this->info ? $this->info->first_name . ' ' . $this->info->last_name : 'Administrator';
+        if ($this->info) {
+            if (!$this->info->first_name && !$this->info->last_name) {
+                return $this->email;
+            }
+
+            return $this->info->first_name . ' ' . $this->info->last_name;
+        }
+
+        return 'Administrator';
     }
 }

@@ -25,6 +25,16 @@
         </div>
     </div>
     <div class="col-sm-6">
+        @if(auth()->user()->hasRole('administrator'))
+        <div class="form-group">
+            <label for="subscription">Subscription</label>
+            <select name="subscription" class="form-control">
+                @foreach (App\Subscription::get() as $subscription)
+                    <option value="{{ $subscription->id }}" {{ $user->info->subscription()->first()->id == $subscription->id ? 'selected' : '' }}>{{ $subscription->label }}</option>
+                @endforeach
+            </select>
+        </div>
+        @endif
         <div class="form-group">
             <label for="reference">How did you hear about us?</label>
             <select name="reference" class="form-control">

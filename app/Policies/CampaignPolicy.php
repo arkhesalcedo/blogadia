@@ -19,7 +19,7 @@ class CampaignPolicy
      */
     public function view(User $user, Campaign $campaign)
     {
-        return true;
+        return $user->hasRole('advertiser') && $campaign->user_id == $user->id || $user->hasRole('administrator') || $user->hasRole('blogger');
     }
 
     /**
@@ -42,7 +42,7 @@ class CampaignPolicy
      */
     public function update(User $user, Campaign $campaign)
     {
-        return $user->hasRole('advertiser') || $user->hasRole('administrator');
+        return $user->hasRole('advertiser') && $campaign->user_id == $user->id || $user->hasRole('administrator');
     }
 
     /**
@@ -54,6 +54,6 @@ class CampaignPolicy
      */
     public function delete(User $user, Campaign $campaign)
     {
-        return $user->hasRole('advertiser') || $user->hasRole('administrator');
+        return $user->hasRole('advertiser') && $campaign->user_id == $user->id || $user->hasRole('administrator');
     }
 }

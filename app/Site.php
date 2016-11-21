@@ -40,4 +40,9 @@ class Site extends Model
     	return $this;
     }
 
+    public function getUrl()
+    {
+        return trim(str_replace('/', '',preg_replace('#^https?://#', '', strtolower($this->url))));
+    }
+
 }

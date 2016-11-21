@@ -43,17 +43,13 @@ class CreateCampaignsTable extends Migration
 
         $subscriptions = [
             [
-                'label' => 'Silver',
-                'name' => 'silver'
+                'label' => 'Free',
+                'name' => 'free'
             ],
             [
-                'label' => 'Gold',
-                'name' => 'gold'
-            ],
-            [
-                'label' => 'Platinum',
-                'name' => 'platinum'
-            ],
+                'label' => 'Paid',
+                'name' => 'paid'
+            ]
         ];
 
         foreach ($subscriptions as $subscrption) {

@@ -22,7 +22,7 @@ class CampaignController extends Controller
      */
     public function index()
     {
-        $campaigns = Campaign::with('user', 'user.info')->withTrashed()->paginate(10);
+        $campaigns = (new Campaign)->getCampaigns();
 
         return view('templates.campaigns', compact(['campaigns']));
     }
@@ -94,9 +94,15 @@ class CampaignController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user, Campaign $campaign)
     {
-        //
+        $this->authorize('view', $campaign);
+
+        $campaign->load(['user', 'uploads', 'invitedUsers', 'user.info', 'user.sites']);
+
+        $bloggers = $user->getBloggers();
+
+        return view('templates.campaign_show', compact(['campaign', 'bloggers']));
     }
 
     /**
@@ -158,9 +164,11 @@ class CampaignController extends Controller
      */
     public function destroy($id, $campaign_id)
     {
-        $this->authorize('delete', auth()->user());
+        $campaign = Campaign::withTrashed()->findOrFail($campaign_id);
 
-        Campaign::withTrashed()->findOrFail($campaign_id)->toggle();
+        $this->authorize('delete', $campaign);
+
+        $campaign->toggle();
 
         return redirect()->back()->with([
             'message' => 'Campaign Status Updated Succesfully!',
@@ -172,6 +180,8 @@ class CampaignController extends Controller
 
     public function uploads(Request $request, $campaign)
     {
+        $this->authorize('update', auth()->user());
+
         $campaign = Campaign::withTrashed()->findOrFail($campaign);
 
         $path = $request->file->storeAs('uploads', time() . '_' . $request->file('file')->getClientOriginalName(), 'public');
@@ -181,5 +191,66 @@ class CampaignController extends Controller
         $upload->path = $path;
         $upload->type = $request->file('file')->getClientOriginalName();
         $upload->save();
+    }
+
+    public function invite(Campaign $campaign, User $user)
+    {
+        $this->authorize('update', $campaign);
+
+        if ($campaign->invitedUsers->contains($user->id)) {
+            $campaign->invitedUsers()->detach($user);
+
+            return [
+                'status' => 'success'
+            ];
+        }
+
+        $campaign->invitedUsers()->save($user, ['message' => 'You invited '.$user->getFullName().' to this campaign.']);
+
+        return [
+            'status' => 'success'
+        ];
+    }
+
+    public function offer(Campaign $campaign, User $user)
+    {
+        $this->authorize('update', $campaign);
+
+        if (!$campaign->maxedBloggers()) {
+            $campaign->invitedUsers()->updateExistingPivot($user->id, ['awarded' => true]);
+
+            return redirect()->back()->with([
+                'message' => 'Campaign Offered To Blogger Succesfully!',
+                'title' => 'Success!',
+                'class' => 'success',
+                'icon' => 'check'
+            ]);
+        }
+
+        return redirect()->back()->with([
+            'message' => 'Bloggers Maxed Out!',
+            'title' => 'Error!',
+            'class' => 'danger',
+            'icon' => 'check'
+        ]);
+    }
+
+    public function apply(Request $request)
+    {
+        $this->validate($request, [
+            'message' => 'required',
+            'campaign_id' => 'required'
+        ]);
+
+        $campaign = Campaign::findOrFail($request->campaign_id);
+
+        $campaign->invitedUsers()->save(auth()->user(), ['message' => $request->message]);
+
+        return redirect()->back()->with([
+            'message' => 'Application Succesful!',
+            'title' => 'Success!',
+            'class' => 'success',
+            'icon' => 'check'
+        ]);
     }
 }

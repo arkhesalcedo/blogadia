@@ -15,7 +15,12 @@
 				<td>{{ $campaign->user->getFullName() }}</td>
 				<td>{{ $campaign->trashed() ? 'Inactive' : 'Active' }}</td>
 				<td>
+					@if(!auth()->user()->hasRole('blogger'))
 					<a href="{{ route('user.campaign.edit',  ['user_id' => $campaign->user->id, 'id' => $campaign->id]) }}" class="btn btn-xs btn-primary">Edit</a>
+					@endif
+					@if(!$campaign->trashed())
+					<a href="{{ route('user.campaign.show', ['user_id' => $campaign->user->id, 'id' => $campaign->id]) }}" class="btn btn-xs btn-success">View</a>
+					@endif
 				</td>
 			</tr>
 			@endforeach

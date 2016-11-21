@@ -13,9 +13,9 @@ class AddCreditsToInfoTable extends Migration
      */
     public function up()
     {
-        Schema::table('infos', function (Blueprint $table) {
-            $table->decimal('credits', 13, 2)->unsigned()->default(0.00);
-        });
+        // Schema::table('infos', function (Blueprint $table) {
+        //     $table->decimal('credits', 13, 2)->unsigned()->default(0.00);
+        // });
     }
 
     /**
@@ -25,8 +25,8 @@ class AddCreditsToInfoTable extends Migration
      */
     public function down()
     {
-        Schema::table('infos', function (Blueprint $table) {
-            $table->dropColumn('credits');
-        });
+        // Schema::table('infos', function (Blueprint $table) {
+        //     $table->dropColumn('credits');
+        // });
     }
 }

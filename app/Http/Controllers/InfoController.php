@@ -16,12 +16,19 @@ class InfoController extends Controller
     {
     	$this->authorize('update', $user);
 
+        $subscription = $request->input('subscription');
+
+        if (!auth()->user()->hasRole('administrator')) {
+            $subscription = $user->info->subscription_id;
+        }
+
         $user->info->update([
             'first_name' => $request->input('first_name'),
             'last_name' => $request->input('last_name'),
             'country' => $request->input('country'),
             'subscribe' => $request->input('subscribe') ? true : false,
-            'reference' => $request->input('reference')
+            'reference' => $request->input('reference'),
+            'subscription_id' => $subscription
         ]);
 
         return redirect()->back()->with([

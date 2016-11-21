@@ -22,7 +22,7 @@ class UserPolicy
      */
     public function view(User $user, User $userObj)
     {
-         return $user->id === $userObj->id || $user->hasPermission('view_user');
+         return true;
     }
 
     /**

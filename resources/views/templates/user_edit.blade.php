@@ -16,6 +16,7 @@
 				    	@if($user->hasRole('blogger'))
 				    		<li role="presentation"><a href="#sites" aria-controls="sites" role="tab" data-toggle="tab">Sites</a></li>
 				    		<li role="presentation"><a href="#social-media" aria-controls="social-media" role="tab" data-toggle="tab">Social Media</a></li>
+				    		<li role="presentation"><a href="#jobs" aria-controls="jobs" role="tab" data-toggle="tab">Jobs</a></li>
 				    	@endif
 				    	@if($user->hasRole('advertiser'))
 				    		<li role="presentation"><a href="#campaigns" aria-controls="campaigns" role="tab" data-toggle="tab">Campaigns</a></li>
@@ -27,9 +28,6 @@
 					    	<div role="tabpanel" class="tab-pane active" id="account">
 						    	<div class="col-sm-6">
 						    		@include('forms.reset_password')
-						    		@if($user->hasRole('advertiser'))
-						    			@include('forms.add_credits')
-						    		@endif
 						    	</div>
 					    		<div class="col-sm-6">
 						    		@if(auth()->user()->hasRole('administrator'))
@@ -57,6 +55,9 @@
 				    			@can('update', $user)
 				    				@include('forms.social_media')
 				    			@endcan
+				    		</div>
+				    		<div role="tabpanel" class="tab-pane" id="jobs">
+				    			@include('forms.jobs')
 				    		</div>
 				    	@endif
 				    	@if($user->hasRole('advertiser'))
