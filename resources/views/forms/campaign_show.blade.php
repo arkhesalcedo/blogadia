@@ -18,7 +18,7 @@
                 @if(!$campaign->uploads->isEmpty())
                     <p><span class="bold">Attachments: </span></p>
                     @foreach ($campaign->uploads as $files)
-                        <a href="{{ asset($files->path) }}" id="download" class="btn btn-success btn-xs" download>{{ $files->type }}</a><br><br>
+                        <a href="{{ asset('storage/' . $files->path) }}" id="download" class="btn btn-success btn-xs" download>{{ $files->type }}</a><br><br>
                     @endforeach
                 @endif
                 @can('update', $campaign)
