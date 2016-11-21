@@ -3,7 +3,7 @@
 @section('content')
 	<div class="col-md-9">
 	    <div class="panel panel-warning">
-	        <div class="panel-heading">{{ $campaign->name }} by {{ $campaign->user->getFullName() }}</div>
+	        <div class="panel-heading">{{ $campaign->name }} by {{ $campaign->user->getFullName() }} <a href="{{ route('user.show', ['id' => $campaign->user->id]) }}" class="btn btn-primary pull-right">View Advertiser</a></div>
 	        <div class="panel-body">
 	        	@include('templates.message')
 				  	<ul class="nav nav-tabs" role="tablist">
